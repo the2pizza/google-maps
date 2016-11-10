@@ -1,14 +1,18 @@
 # google-maps
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure library designed to operate Google Maps API through official SDK
 
 ## Usage
 
-FIXME
+    (require '[google-maps.core :as m])
+    (m/defkey "API-KEY")
+    (m/coordinates->a lat lng)
+    (m/address->coordinates "ADDRESS")
+    (m/distance "ADDRESS 1" "ADDRESS2")
 
 ## License
 
-Copyright © 2016 FIXME
+Copyright © 2016 8ll
 
-Distributed under the Eclipse Public License either version 1.0 or (at
+Distributed under the MIT License either version 1.0 or (at
 your option) any later version.
