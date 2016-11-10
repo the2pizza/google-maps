@@ -4,6 +4,8 @@ A Clojure library designed to operate Google Maps API through official SDK
 
 ## Usage
 
+    [lowl4tency/google-maps "0.1.0-SNAPSHOT"]
+
     (require '[google-maps.core :as m])
     (m/defkey "API-KEY")
     (m/coordinates->a lat lng)
