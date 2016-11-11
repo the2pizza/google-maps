@@ -5,7 +5,7 @@ A Clojure library designed to operate Google Maps API through official SDK
 ## Usage
 
 ```
-    [lowl4tency/google-maps "0.1.0-SNAPSHOT"]
+    [lowl4tency/google-maps "0.2.0-SNAPSHOT"]
 
 ```
 

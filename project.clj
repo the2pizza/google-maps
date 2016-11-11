@@ -1,4 +1,4 @@
-(defproject lowl4tency/google-maps "0.1.1-SNAPSHOT"
+(defproject lowl4tency/google-maps "0.2.0-SNAPSHOT"
   :description "Google Maps SDK Wrapper "
   :url "http://githab.com/lowl4tency/google-maps"
   :license {:name "MIT License"
