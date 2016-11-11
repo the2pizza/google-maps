@@ -6,65 +6,58 @@
             [com.google.maps.model
                              LatLng]))
 
-(defmacro defkey  [s]
-     (def ^:dynamic *api-key* s))
+(defn make-context [api-key]
+  (doto (GeoApiContext.)
+    (.setApiKey api-key)))
 
-(defn address->coordinates [p]
-  (let [context (GeoApiContext.)]
-    (.setApiKey context *api-key*)
-    (let [r (first (. (GeocodingApi/geocode context p) await ))
-          n (->> (. r addressComponents)
-                 (map #(hash-map (.toString (first (.types %))) (.longName %)))
-                 (apply conj)
-                 keywordize-keys)]
-      {:lat (-> r
-                .geometry
-                .location
-                .lat)
-       :lng (-> r
-                .geometry
-                .location
-                .lng)
-       :address (-> r .formattedAddress)
-       :city (:locality n)
-       :country (:country n)})))
+(defn address->coordinates [context p]
+  (let [r (first (. (GeocodingApi/geocode context p) await ))
+        n (->> (. r addressComponents)
+               (map #(hash-map (.toString (first (.types %))) (.longName %)))
+               (apply conj)
+               keywordize-keys)]
+    {:lat (-> r
+              .geometry
+              .location
+              .lat)
+     :lng (-> r
+              .geometry
+              .location
+              .lng)
+     :address (-> r .formattedAddress)
+     :city (:locality n)
+     :country (:country n)}))
 
-(defn coordinates->address [lat lng]
-  (let [context (GeoApiContext.)
-        latlng (LatLng. lat lng)]
-    (.setApiKey context *api-key*)
-    (let [r (first (. (GeocodingApi/reverseGeocode
+(defn coordinates->address [context lat lng]
+  (let [latlng (LatLng. lat lng)
+        r (first (. (GeocodingApi/reverseGeocode
                      context
                      latlng) await   ))
-           n (->> (. r addressComponents)
-                 (map #(hash-map (.toString (first (.types %))) (.longName %)))
-                 (apply conj)
-                 keywordize-keys)]
-      {:address (-> r
+        n (->> (. r addressComponents)
+               (map #(hash-map (.toString (first (.types %))) (.longName %)))
+               (apply conj)
+               keywordize-keys)]
+     {:address (-> r
                    .formattedAddress)
-       :city (:locality n)
-       :country (:country n)} )))
+      :city (:locality n)
+      :country (:country n)}))
 
-(defn distance [p1 p2]
-  (let [context (GeoApiContext.)]
-    (.setApiKey context *api-key*)
-    (let [r (. (DistanceMatrixApi/getDistanceMatrix
-                     context
-                     (into-array [p1])
-                     (into-array [p2])) await)]
-
-      {:distance (-> r
+(defn distance [context p1 p2]
+  (let [r (. (DistanceMatrixApi/getDistanceMatrix
+              context
+              (into-array [p1])
+              (into-array [p2])) await)]
+    {:distance (-> r
                    .rows
                    first
                    .elements
                    first
                    .distance
                    .inMeters)
-       :duration (-> r
-                     .rows
-                     first
-                     .elements
-                     first
-                     .duration
-                     .inSeconds
-                     )})))
+     :duration (-> r
+                   .rows
+                   first
+                   .elements
+                   first
+                   .duration
+                   .inSeconds)}))
