@@ -1,5 +1,7 @@
 # google-maps
 
+[![CircleCI](https://circleci.com/gh/lowl4tency/google-maps/tree/master.svg?style=svg)](https://circleci.com/gh/lowl4tency/google-maps/tree/master)
+
 A Clojure library designed to operate Google Maps API through official SDK
 
 ## Usage
