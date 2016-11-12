@@ -15,13 +15,19 @@ A Clojure library designed to operate Google Maps API through official SDK
 
 ### List of functions:
 
+       (m/make-context "API-KEY")
+       returns GeoApiContext
+
+       (m/latlng {:lat Num :lng Num})
+       returns LatLng
+
        (m/address->coordinates context address)
        returns {:lat Num, :lng Num, :address Str, :city Str, :country Str}
 
-       (m/coordinates->address context Lat Lng)
+       (m/coordinates->address context LatLng)
        returns {:address Str, :city Str, :country Str}
 
-       (m/distance context Address1 Address2)
+       (m/distance context {:a1 Str :a2 Str})
        returns {:distance Num  ;meters
                 :duration Num} ;seconds
 ```

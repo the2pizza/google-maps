@@ -10,6 +10,9 @@
   (doto (GeoApiContext.)
     (.setApiKey api-key)))
 
+(defn latlng [{:keys [lat lng]}]
+  (LatLng. lat lng))
+
 (defn address->coordinates [context p]
   (let [r (first (. (GeocodingApi/geocode context p) await ))
         n (->> (. r addressComponents)
@@ -28,9 +31,8 @@
      :city (:locality n)
      :country (:country n)}))
 
-(defn coordinates->address [context lat lng]
-  (let [latlng (LatLng. lat lng)
-        r (first (. (GeocodingApi/reverseGeocode
+(defn coordinates->address [context latlng]
+  (let [r (first (. (GeocodingApi/reverseGeocode
                      context
                      latlng) await   ))
         n (->> (. r addressComponents)
@@ -42,11 +44,11 @@
       :city (:locality n)
       :country (:country n)}))
 
-(defn distance [context p1 p2]
+(defn distance [context {:keys [a1 a2]}]
   (let [r (. (DistanceMatrixApi/getDistanceMatrix
               context
-              (into-array [p1])
-              (into-array [p2])) await)]
+              (into-array [a1])
+              (into-array [a2])) await)]
     {:distance (-> r
                    .rows
                    first
