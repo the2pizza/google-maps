@@ -1,0 +1,12 @@
+machine:
+  timezone:
+    Europe/Moscow
+  post:
+    # circle instance already run postgresql
+    - sudo service postgresql stop
+
+test:
+  override:
+    - lein test
+
+
