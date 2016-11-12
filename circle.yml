@@ -7,6 +7,6 @@ machine:
 
 test:
   override:
-    - lein test
+    - lein test 2>/dev/null
 
 
